@@ -1,0 +1,2 @@
+json=com.fulian.lianyurpc.serializer.JsonSerializer
+kryo=com.fulian.lianyurpc.serializer.KryoSerializer

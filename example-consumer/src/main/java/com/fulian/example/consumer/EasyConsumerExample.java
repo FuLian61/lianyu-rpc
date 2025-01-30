@@ -2,7 +2,6 @@ package com.fulian.example.consumer;
 
 import com.fulian.example.model.User;
 import com.fulian.example.service.UserService;
-import com.fulian.lianyurpc.proxy.ServiceProxy;
 import com.fulian.lianyurpc.proxy.ServiceProxyFactory;
 
 /**

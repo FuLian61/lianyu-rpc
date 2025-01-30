@@ -1,0 +1,2 @@
+jdk=com.fulian.lianyurpc.serializer.JdkSerializer
+hessian=com.fulian.lianyurpc.serializer.HessianSerializer

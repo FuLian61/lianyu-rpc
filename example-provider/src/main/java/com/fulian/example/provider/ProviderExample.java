@@ -2,7 +2,12 @@ package com.fulian.example.provider;
 
 import com.fulian.RpcApplication;
 import com.fulian.example.service.UserService;
+import com.fulian.lianyurpc.config.RegistryConfig;
+import com.fulian.lianyurpc.config.RpcConfig;
+import com.fulian.lianyurpc.model.ServiceMetaInfo;
 import com.fulian.lianyurpc.registry.LocalRegistry;
+import com.fulian.lianyurpc.registry.Registry;
+import com.fulian.lianyurpc.registry.RegistryFactory;
 import com.fulian.lianyurpc.server.HttpServer;
 import com.fulian.lianyurpc.server.VertxHttpServer;
 
@@ -16,10 +21,26 @@ public class ProviderExample {
         RpcApplication.init();
 
         // 注册服务
-        LocalRegistry.registry(UserService.class.getName(),UserServiceImpl.class);
+        String serviceName = UserService.class.getName();
+        LocalRegistry.registry(serviceName,UserServiceImpl.class);
+
+        // 注册到注册中心
+        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
+        serviceMetaInfo.setServiceName(serviceName);
+        serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
+        serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
+
+        try {
+            registry.register(serviceMetaInfo);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         // 启动 web 服务
         HttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        httpServer.doStart(rpcConfig.getServerPort());
     }
 }

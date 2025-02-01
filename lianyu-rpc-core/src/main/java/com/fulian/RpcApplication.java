@@ -1,7 +1,10 @@
 package com.fulian;
 
+import com.fulian.lianyurpc.config.RegistryConfig;
 import com.fulian.lianyurpc.config.RpcConfig;
 import com.fulian.lianyurpc.constant.RpcConstant;
+import com.fulian.lianyurpc.registry.Registry;
+import com.fulian.lianyurpc.registry.RegistryFactory;
 import com.fulian.lianyurpc.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +25,12 @@ public class RpcApplication
     public static void init(RpcConfig newRpcConfig){
         rpcConfig = newRpcConfig;
         log.info("rpc init, config = {}", newRpcConfig.toString());
+
+        // 注册中心初始化
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init, config = {}", registryConfig);
     }
 
     /**

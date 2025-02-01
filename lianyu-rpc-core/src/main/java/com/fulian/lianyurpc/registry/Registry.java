@@ -4,7 +4,6 @@ import com.fulian.lianyurpc.config.RegistryConfig;
 import com.fulian.lianyurpc.model.ServiceMetaInfo;
 
 import java.util.List;
-
 /**
  * 注册中心
  */
@@ -40,4 +39,15 @@ public interface Registry {
      * 服务销毁
      */
     void destroy();
+
+    /**
+     * 心跳检测（服务端）
+     */
+    void heartbeat();
+
+    /**
+     * 监听（消费端）
+     * @param serviceNodeKey
+     */
+    void watch(String serviceNodeKey);
 }
